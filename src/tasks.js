@@ -1,18 +1,15 @@
 export default class Task {
     constructor(id, description) {
         this.id = id;
-        this.description = description;
-        this.saveTask();
+        this.desc = description;
     }
 
-    saveTask() {
-        //INSERT VALIDATION HERE
-        localStorage.setItem(this.id, this.description);
-    }
+    // set desc(value) {
+    //     if (!value) console.log('Please enter a Task description');
+    //     else return this._desc = value;
+    // }
 
-    deleteTask() {
-        //INSERT VALIDATION HERE
-        localStorage.removeItem(this.id);
-    }
+    // get desc() {
+    //     return this._desc;
+    // }
 }
-

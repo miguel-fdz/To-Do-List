@@ -1,4 +1,5 @@
 import Task from './tasks.js';
+let taskList = [];
 
 export const newTaskBtn = () => {
     const btn = document.createElement('button');
@@ -6,10 +7,10 @@ export const newTaskBtn = () => {
     btn.id = 'newTask';
 
     btn.onclick = () => {
-        const taskID = `task${localStorage.length + 1}`;
-        //Validate it last node entered has been saved in order to render new task form
-
+        const taskID = `task${taskList.length + 1}`;
+        renderAllTasks();
         renderTask(taskID, '');
+        newTaskBtn();
     }
 
     document.body.appendChild(btn);
@@ -17,13 +18,41 @@ export const newTaskBtn = () => {
 
 export const renderTask = (id, description) => {
     const task = document.createElement('div');
-    const chkBox = document.createElement('button');
-    const taskDescription = document.createElement('input');
-    const taskID = id;
 
+    const chkBox = document.createElement('input');
+    chkBox.type = 'checkbox';
+    chkBox.classList.add('chkBox');
+    
+    const taskDescription = document.createElement('input');
+    taskDescription.classList.add('taskDesc');
+    taskDescription.placeholder = 'Enter task description';
+    taskDescription.size = 65;
+
+    const taskID = id;
     taskDescription.value = description;
-    taskDescription.addEventListener("keydown", (e) => {
-        if (e.key === 'Enter') new Task(e.target.parentNode.id, e.target.value);
+
+    chkBox.addEventListener('click', () => {
+        task.classList.add('erasing');
+        setTimeout(() => {
+            taskList = taskList.filter(t => t.id != taskID);
+            renderAllTasks();
+            newTaskBtn();
+        }, 2000);
+    });
+
+    taskDescription.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !!e.target.value) {
+            const newTask = new Task(`task${taskList.length}`, e.target.value);
+            
+            if (!!newTask.desc) {
+                taskList.push(newTask);
+                localStorage.setItem('toDoList', JSON.stringify(taskList));
+
+                task.classList.remove('editing');
+                task.classList.add('saved');
+            }
+        }
+        else task.classList.add('editing');
     });
 
     task.appendChild(chkBox);
@@ -36,11 +65,11 @@ export const renderTask = (id, description) => {
 
 export const renderAllTasks = () => {
     //CLEAR PREVIOUS NODES
+    document.getElementsByTagName('body')[0].textContent = '';
+    
+    if (!localStorage.getItem('toDoList') == null) taskList = JSON.parse(localStorage.getItem('toDoList'));
 
-    for (const task in localStorage) {
-        //if key being accessed isnt an inherited property
-        if (localStorage.hasOwnProperty(task)) renderTask(task, localStorage.getItem(task));
+    if (taskList.length > 0) {
+        for (const task of taskList) renderTask(task.id, task.desc);
     }
-
-    newTaskBtn();
 }

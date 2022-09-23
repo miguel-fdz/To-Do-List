@@ -6,11 +6,41 @@ body {
 }
 
 .task {
-    height: 100px;
+    margin: 1% 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75px;
     width: 600px;
     min-width: 200px;
     background-color: darkgrey;
-    border: .5px solid #000;
+    border-radius: 10px;
+}
+
+.editing {
+    border: 2px solid orange;
+}
+
+.saved {
+    border: 2px solid green;
+}
+
+.erasing {
+    border: 2px solid red;
+}
+
+.taskDesc {
+    margin-right: auto;
+    width:max-content;
+    /* outline: none; */
+}
+
+.chkBox {
+    margin: 0 1.5rem;
+    border-radius: 3px;
+    border: 2px solid lightseagreen;
+    height: 1rem;
+    width: 1rem;
 }
 
 #newTask {
