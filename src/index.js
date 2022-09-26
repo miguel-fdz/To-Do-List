@@ -1,7 +1,6 @@
 import * as dom from './dom.js'
 import './style.css';
 
-if (localStorage.length > 0) {
-    dom.renderAllTasks();
-    dom.newTaskBtn();
-} else dom.newTaskBtn();
+if (!!localStorage.getItem('toDoList')) dom.renderAllTasks();
+
+dom.newTaskBtn();

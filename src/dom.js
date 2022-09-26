@@ -67,9 +67,8 @@ export const renderAllTasks = () => {
     //CLEAR PREVIOUS NODES
     document.getElementsByTagName('body')[0].textContent = '';
     
-    if (!localStorage.getItem('toDoList') == null) taskList = JSON.parse(localStorage.getItem('toDoList'));
-
-    if (taskList.length > 0) {
+    if (!!localStorage.getItem('toDoList')) {
+        taskList = JSON.parse(localStorage.getItem('toDoList'));
         for (const task of taskList) renderTask(task.id, task.desc);
     }
 }
